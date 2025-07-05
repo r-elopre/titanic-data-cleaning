@@ -4,6 +4,8 @@ This repository demonstrates basic data-cleaning steps on the Kaggle Titanic dat
 
 ## This Commit
 
+FIRST COMMIT
+
 - **Included raw data**: added `data/train.csv` so you can run the cleaning steps without downloading anything.
 - **Data inspection**: ran `titanic_clean.py` and discovered:
   - `Age` has **177** missing values.
