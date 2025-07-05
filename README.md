@@ -2,14 +2,12 @@
 This repository demonstrates basic data-cleaning steps on the Kaggle Titanic dataset.
 
 
-## This Commit
+## Commit 1: Initial Setup & Data Inspection
 
-FIRST COMMIT AND PUSH 
-(Add requirements.txt for environment reproducibility and Initial commit: add data-inspection script and .gitignore)
-
-- **Included raw data**: added `data/train.csv` so you can run the cleaning steps without downloading anything.
-- **Data inspection**: ran `titanic_clean.py` and discovered:
-  - `Age` has **177** missing values.
-  - `Cabin` has **687** missing values.
-  - `Embarked` has **2** missing values.
-
+- **Raw data**: added `data/train.csv`  
+- **Dependencies**: added `requirements.txt` and `.gitignore`  
+- **Inspection script**: added `titanic_clean.py`  
+- **Findings** (from running `titanic_clean.py`):
+  - `Age` → 177 missing  
+  - `Cabin` → 687 missing  
+  - `Embarked` → 2 missing
