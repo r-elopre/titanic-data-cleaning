@@ -1,8 +1,6 @@
-# Titanic Data Cleaning
 
 This repository demonstrates basic data-cleaning steps on the Kaggle Titanic dataset.
 
-## Folder Structure
 
 ## This Commit
 
