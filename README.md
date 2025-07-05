@@ -4,7 +4,8 @@ This repository demonstrates basic data-cleaning steps on the Kaggle Titanic dat
 
 ## This Commit
 
-FIRST COMMIT
+FIRST COMMIT AND PUSH 
+(Add requirements.txt for environment reproducibility and Initial commit: add data-inspection script and .gitignore)
 
 - **Included raw data**: added `data/train.csv` so you can run the cleaning steps without downloading anything.
 - **Data inspection**: ran `titanic_clean.py` and discovered:
