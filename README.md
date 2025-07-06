@@ -50,3 +50,19 @@ This repository demonstrates basic data-cleaning steps on the Kaggle Titanic dat
 
 > This initial commit sets up our environment, brings in the raw data, and identifies which fields need cleaning or imputation.  
 
+
+## Commit 2: Exploratory Data Analysis
+
+**EDA Script**  
+Created `titanic_eda.py` to explore data distributions, missingness, and feature relationships.
+
+- **Dependencies:**  
+  ```bash
+  pip install matplotlib seaborn missingno
+
+- Executed with:
+    ```bash
+    python titanic_eda.py
+    ```
+![image](https://github.com/user-attachments/assets/4d83215f-8caa-4b06-8ce2-ef427fac22cc)
+
