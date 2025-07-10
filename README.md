@@ -66,3 +66,64 @@ Created `titanic_eda.py` to explore data distributions, missingness, and feature
     ```
 ![image](https://github.com/user-attachments/assets/4d83215f-8caa-4b06-8ce2-ef427fac22cc)
 
+
+
+
+
+
+## Commit 3: Missing-Value Imputation & EDA Integration
+
+- **Imputation Script** (`titanic_imputation.py`)  
+  - Created a standalone imputation module with `argparse` support:  
+    ```bash
+    python titanic_imputation.py --input data/train.csv --output data/train_imputed.csv
+    ```  
+  - Applies simple strategies:  
+    - Fills missing `Age` with the median  
+    - Fills missing `Embarked` with the mode  
+    - Drops the `Cabin` column entirely  
+  - Prints null-count summaries before and after imputation:
+    ```bash
+    Before imputation:
+      PassengerId      0
+      Survived         0
+      Pclass           0
+      Name             0
+      Sex              0
+      Age            177
+      SibSp            0
+      Parch            0
+      Ticket           0
+      Fare             0
+      Cabin          687
+      Embarked         2
+
+    After imputation:
+      PassengerId    0
+      Survived       0
+      Pclass         0
+      Name           0
+      Sex            0
+      Age            0
+      SibSp          0
+      Parch          0
+      Ticket         0
+      Fare           0
+      Embarked       0
+    ```
+
+- **EDA Script Update** (`titanic_eda.py`)  
+  - Changed the default data source to the imputed file:
+    ```diff
+    - df = pd.read_csv("data/train.csv")
+    + df = pd.read_csv("data/train_imputed.csv")
+    ```
+  - Added an optional `--input` argument for flexibility:
+    ```bash
+    python titanic_eda.py --input data/train.csv
+    ```
+
+    <img width="1916" height="974" alt="image" src="https://github.com/user-attachments/assets/75d588d0-b7ba-4497-a057-04e5b0860111" />
+
+
+> This commit adds a reproducible imputation step, integrates the cleaned dataset into the EDA pipeline, and updates documentation accordingly.
