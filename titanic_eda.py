@@ -4,7 +4,7 @@ import seaborn as sns
 import missingno as msno
 
 # 1. Load & Inspect
-df = pd.read_csv("data/train.csv")
+df = pd.read_csv("data/train_imputed.csv")
 print("Shape:", df.shape)
 print(df.info())
 
