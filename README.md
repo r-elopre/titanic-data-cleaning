@@ -1,129 +1,172 @@
+# Titanic Dataset Preprocessing Pipeline
 
-This repository demonstrates basic data-cleaning steps on the Kaggle Titanic dataset.
+## Overview
+This project provides a comprehensive pipeline for cleaning, exploring, and preprocessing the Titanic dataset to prepare it for machine learning tasks. The pipeline consists of six Python scripts that handle data inspection, cleaning, exploratory data analysis (EDA), processing, encoding, and scaling. Each script performs specific tasks to transform the raw dataset into a clean, machine-learning-ready format.
 
+The Titanic dataset contains information about passengers aboard the Titanic, including features like age, sex, passenger class, and survival status. The goal of this pipeline is to clean and preprocess this data to ensure it is consistent, complete, and suitable for predictive modeling.
 
-## Commit 1: Environment Setup & Initial Data Inspection
+## Dataset
+The dataset used is the Titanic dataset (`train.csv`), typically sourced from Kaggle. It contains 891 rows and 12 columns:
+- **PassengerId**: Unique identifier for each passenger
+- **Survived**: Survival status (0 = No, 1 = Yes)
+- **Pclass**: Passenger class (1 = 1st, 2 = 2nd, 3 = 3rd)
+- **Name**: Passenger's name
+- **Sex**: Gender (male, female)
+- **Age**: Age in years
+- **SibSp**: Number of siblings/spouses aboard
+- **Parch**: Number of parents/children aboard
+- **Ticket**: Ticket number
+- **Fare**: Ticket fare
+- **Cabin**: Cabin number
+- **Embarked**: Port of embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)
 
-- **Environment**  
-  - Created and activated a Python virtual environment:  
-    ```bash
-    python -m venv venv
-    # PowerShell:
-    .\venv\Scripts\Activate
-    # macOS/Linux:
-    source venv/bin/activate
-    ```
-  - Installed `pandas` and froze exact versions to `requirements.txt` via:
-    ```bash
-    pip install pandas
-    pip freeze > requirements.txt
-    ```
-  - Added `.gitignore` to exclude:
-    ```
-    venv/
-    __pycache__/
-    *.pyc
-    ```
-
-- **Raw Data**  
-  - Committed the original Titanic CSV under `data/train.csv` so no external download is required.
-
-- **Inspection Script** (`titanic_clean.py`)  
-  - Loaded the data and ran:
-    ```python
-    import pandas as pd
-    df = pd.read_csv("data/train.csv")
-    print(df.shape)           # → (891, 12)
-    print(df.columns)         # → list of 12 column names
-    print(df.isnull().sum())  # → missing-value counts
-    df.info()                 # → types & non-null counts
-    ```
-  - Executed with:
-    ```bash
-    python titanic_clean.py
-    ```
-
-- **Key Findings**  
-  - **Age**: 177 missing values (~20%)  
-  - **Cabin**: 687 missing values (~77%)  
-  - **Embarked**: 2 missing values (<1%)
-
-> This initial commit sets up our environment, brings in the raw data, and identifies which fields need cleaning or imputation.  
-
-
-## Commit 2: Exploratory Data Analysis
-
-**EDA Script**  
-Created `titanic_eda.py` to explore data distributions, missingness, and feature relationships.
-
-- **Dependencies:**  
+## Prerequisites
+To run the scripts, you need:
+- Python 3.6 or higher
+- A virtual environment (recommended)
+- Required Python libraries:
   ```bash
-  pip install matplotlib seaborn missingno
+  pip install pandas seaborn matplotlib scikit-learn
+  ```
+- The Titanic dataset (`train.csv`) placed in the directory:
+  ```
+  C:\Users\ri\OneDrive\ai project\data cleaning\titanic\data\
+  ```
 
-- Executed with:
-    ```bash
-    python titanic_eda.py
-    ```
-![image](https://github.com/user-attachments/assets/4d83215f-8caa-4b06-8ce2-ef427fac22cc)
+## Directory Structure
+The project is organized as follows:
+```
+titanic/
+├── data/
+│   ├── train.csv               # Raw dataset
+│   ├── train_cleaned.csv       # Output from clean.py
+│   ├── train_processed.csv     # Output from process_data.py
+│   ├── train_encoded_complete.csv # Output from encode_data.py
+│   ├── train_scaled.csv        # Output from scale_data.py
+│   ├── plots/                  # Directory for EDA visualizations
+├── cleaning and preprocessing/
+│   ├── diagnose.py             # Initial dataset inspection
+│   ├── clean.py               # Data cleaning
+│   ├── EDA.py                 # Exploratory data analysis
+│   ├── process_data.py        # Remove unnecessary columns and count frequencies
+│   ├── encode_data.py         # Categorical encoding
+│   ├── scale_data.py          # Numeric feature scaling
+├── README.md                  # This file
+```
 
+## Scripts and Their Functionality
 
+### 1. diagnose.py
+**Purpose**: Inspect the raw dataset to understand its structure and identify issues.
+- **Actions**:
+  - Loads `train.csv`.
+  - Displays dataset shape, column names, missing values, data types, and the first 5 rows.
+- **Output**:
+  - Console output summarizing dataset properties.
+  - Key findings: 177 missing `Age` values, 687 missing `Cabin` values, 2 missing `Embarked` values.
 
+### 2. clean.py
+**Purpose**: Clean the dataset by handling missing values, standardizing data, and removing inconsistencies.
+- **Actions**:
+  - Imputes missing `Age` values with the median grouped by `Sex` and `Pclass`.
+  - Imputes missing `Embarked` values with the mode.
+  - Extracts `Deck` from `Cabin` (first letter) and imputes missing as 'Unknown'; drops `Cabin`.
+  - Converts `Sex` and `Embarked` to lowercase.
+  - Validates categorical columns (`Sex`: male/female, `Embarked`: c/q/s).
+  - Clips negative values in `Age`, `Fare`, `SibSp`, `Parch` to 0.
+  - Caps `Fare` outliers at the 99th percentile.
+- **Output**:
+  - Saves cleaned dataset to `train_cleaned.csv`.
+  - Console output showing no missing values, unique categorical values, numeric statistics, and the first 5 rows.
 
+### 3. EDA.py
+**Purpose**: Perform exploratory data analysis to understand data distributions and relationships.
+- **Actions**:
+  - Loads `train_cleaned.csv`.
+  - Verifies no missing values and validates categorical and numeric columns.
+  - Generates visualizations saved to `data/plots/`:
+    - Histograms: `Age`, `Fare`
+    - Bar plots: `Survived`, `Pclass`, `Sex`, `Embarked`, `Deck`
+    - Correlation heatmap: Numeric columns
+    - Survival rate by `Pclass` and `Sex`
+  - Computes survival rates by `Pclass`, `Sex`, and `Embarked`.
+- **Output**:
+  - Visualizations saved as PNG files in `data/plots/`.
+  - Console output with missing value checks, unique values, numeric statistics, and survival rates.
 
+### 4. process_data.py
+**Purpose**: Remove unnecessary columns and summarize categorical feature frequencies.
+- **Actions**:
+  - Loads `train_cleaned.csv`.
+  - Drops `Name` and `Ticket` columns (not useful for modeling).
+  - Counts unique values and frequencies for `Sex`, `SibSp`, `Parch`, `Embarked`, and `Deck`.
+- **Output**:
+  - Saves processed dataset to `train_processed.csv`.
+  - Console output with unique value counts, dataset shape, column names, and missing value checks.
 
-## Commit 3: Missing-Value Imputation & EDA Integration
+### 5. encode_data.py
+**Purpose**: Encode categorical variables for machine learning.
+- **Actions**:
+  - Loads `train_processed.csv`.
+  - Applies one-hot encoding to `Sex`, `Embarked`, and `Deck`, dropping the first category to avoid multicollinearity:
+    - `Sex`: Encoded as `Sex_male` (reference: female)
+    - `Embarked`: Encoded as `Embarked_q`, `Embarked_s` (reference: c)
+    - `Deck`: Encoded as `Deck_B`, `Deck_C`, etc. (reference: A)
+- **Output**:
+  - Saves encoded dataset to `train_encoded_complete.csv`.
+  - Console output with encoded column details, dataset shape, column names, missing values, data types, and the first 5 rows.
 
-- **Imputation Script** (`titanic_imputation.py`)  
-  - Created a standalone imputation module with `argparse` support:  
-    ```bash
-    python titanic_imputation.py --input data/train.csv --output data/train_imputed.csv
-    ```  
-  - Applies simple strategies:  
-    - Fills missing `Age` with the median  
-    - Fills missing `Embarked` with the mode  
-    - Drops the `Cabin` column entirely  
-  - Prints null-count summaries before and after imputation:
-    ```bash
-    Before imputation:
-      PassengerId      0
-      Survived         0
-      Pclass           0
-      Name             0
-      Sex              0
-      Age            177
-      SibSp            0
-      Parch            0
-      Ticket           0
-      Fare             0
-      Cabin          687
-      Embarked         2
+### 6. scale_data.py
+**Purpose**: Scale numeric features to standardize them for machine learning.
+- **Actions**:
+  - Loads `train_encoded_complete.csv`.
+  - Applies `StandardScaler` to `Age`, `Fare`, `SibSp`, and `Parch` (mean=0, std=1).
+- **Output**:
+  - Saves scaled dataset to `train_scaled.csv`.
+  - Console output with scaled statistics, dataset shape, column names, missing values, data types, and the first 5 rows.
 
-    After imputation:
-      PassengerId    0
-      Survived       0
-      Pclass         0
-      Name           0
-      Sex            0
-      Age            0
-      SibSp          0
-      Parch          0
-      Ticket         0
-      Fare           0
-      Embarked       0
-    ```
+## How to Run the Pipeline
+1. **Set up the environment**:
+   ```bash
+   python -m venv venv
+   .\venv\Scripts\activate
+   pip install pandas seaborn matplotlib scikit-learn
+   ```
+2. **Place the dataset**:
+   - Ensure `train.csv` is in `C:\Users\ri\OneDrive\ai project\data cleaning\titanic\data\`.
+3. **Run the scripts in order**:
+   ```bash
+   python diagnose.py
+   python clean.py
+   python EDA.py
+   python process_data.py
+   python encode_data.py
+   python scale_data.py
+   ```
+4. **Check outputs**:
+   - Intermediate datasets in `data/`.
+   - Visualizations in `data/plots/`.
+   - Console outputs for diagnostics and summaries.
 
-- **EDA Script Update** (`titanic_eda.py`)  
-  - Changed the default data source to the imputed file:
-    ```diff
-    - df = pd.read_csv("data/train.csv")
-    + df = pd.read_csv("data/train_imputed.csv")
-    ```
-  - Added an optional `--input` argument for flexibility:
-    ```bash
-    python titanic_eda.py --input data/train.csv
-    ```
+## Key Outputs
+- **Final Dataset**: `train_scaled.csv` is ready for machine learning, with:
+  - No missing values.
+  - Encoded categorical variables (`Sex`, `Embarked`, `Deck`).
+  - Standardized numeric features (`Age`, `Fare`, `SibSp`, `Parch`).
+  - Columns: `PassengerId`, `Survived`, `Pclass`, `Age`, `SibSp`, `Parch`, `Fare`, `Sex_male`, `Embarked_q`, `Embarked_s`, `Deck_B`, `Deck_C`, `Deck_D`, `Deck_E`, `Deck_F`, `Deck_G`, `Deck_T`, `Deck_Unknown`.
+- **Visualizations**: Plots in `data/plots/` for data exploration.
+- **Console Outputs**: Detailed diagnostics from each script.
 
-    <img width="1916" height="974" alt="image" src="https://github.com/user-attachments/assets/75d588d0-b7ba-4497-a057-04e5b0860111" />
+## Notes
+- The pipeline assumes the dataset is in the specified path. Update file paths in the scripts if your directory structure differs.
+- The `EDA.py` script generates visualizations that help understand data distributions and survival patterns (e.g., higher survival rates for females and 1st-class passengers).
+- The final dataset (`train_scaled.csv`) is suitable for training machine learning models, such as logistic regression or random forests.
 
+## Future Improvements
+- Add feature engineering (e.g., create family size from `SibSp` + `Parch`).
+- Include additional visualizations (e.g., box plots, pair plots).
+- Handle rare categories in `Deck` (e.g., merge low-frequency decks).
+- Add error handling for missing files or unexpected data formats.
 
-> This commit adds a reproducible imputation step, integrates the cleaned dataset into the EDA pipeline, and updates documentation accordingly.
+## Contact
+For questions or suggestions, please reach out to the project maintainer.
