@@ -1,7 +1,5 @@
 # Titanic Dataset Preprocessing Pipeline
-<video src="./Untitled video - Made with Clipchamp - 2025-08-09T074744.380.mp4" controls width="640">
-Your browser does not support the video tag.
-</video>
+
 ## Overview
 This project provides a comprehensive pipeline for cleaning, exploring, and preprocessing the Titanic dataset to prepare it for machine learning tasks. The pipeline consists of six Python scripts that handle data inspection, cleaning, exploratory data analysis (EDA), processing, encoding, and scaling. Each script performs specific tasks to transform the raw dataset into a clean, machine-learning-ready format.
 
